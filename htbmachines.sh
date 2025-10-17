@@ -56,30 +56,30 @@ function helpPanel(){
   # Sin argumentos
 
 function updateFiles(){
-  if [ ! -f bundle.js ]; then
+  if [ ! -f data/bundle.js ]; then
     tput civis
     echo -e "\n${yellowColour}[+]${greyColour} Descargando archivos necesarios...${endColour}"
-    curl -s $main_url > bundle.js
-    js-beautify -r bundle.js
+    curl -s $main_url > data/bundle.js
+    js-beautify -r data/bundle.js > /dev/null
     echo -e "\n${yellowColour}[+]${greyColour} Todos los archivos han sido descargados${endColour}\n"
     tput cnorm
   else
     tput civis
     echo -e "\n${yellowColour}[+]${greyColour} Comprobando si hay actualizaciones pendientes...${endColour}"
-    curl -s $main_url > bundle_temp.js
-    js-beautify -r bundle_temp.js
+    curl -s $main_url > data/bundle_temp.js
+    js-beautify -r data/bundle_temp.js > /dev/null
     # Utilizamos el hash md5 para comprobar si ha habido cambios
-    md5_temp_value=$(md5sum bundle_temp.js | awk '{print $1}')
-    md5_original_value=$(md5sum bundle.js | awk '{print $1}')
+    md5_temp_value=$(md5sum data/bundle_temp.js | awk '{print $1}')
+    md5_original_value=$(md5sum data/bundle.js | awk '{print $1}')
 
     if [ "$md5_temp_value" == "$md5_original_value" ]; then
       echo -e "\n${yellowColour}[+]${greyColour} No se han detectado actualizaciones. Los archivos están al día.${endColour}\n"
-      rm bundle_temp.js
+      rm data/bundle_temp.js
     else
       echo -e "\n${yellowColour}[+]${greyColour} Se han encontrado actualizaciones disponibles${endColour}"
       sleep 1
 
-      rm bundle.js && mv bundle_temp.js bundle.js
+      rm data/bundle.js && mv data/bundle_temp.js data/bundle.js
       echo -e "\n${yellowColour}[+]${greyColour} Los archivos han sido actualizados correctamente${endColour}\n"
     fi
     tput cnorm
@@ -95,7 +95,7 @@ function updateFiles(){
 function searchMachine(){
   machineName="$1"
 
-  machineName_checker=$(cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id:|sku:|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//')
+  machineName_checker=$(cat data/bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id:|sku:|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//')
   
   if [ "$machineName_checker" ]; then
     echo -e "\n${yellowColour}[+]${greyColour} Listando las propiedades de la máquina${blueColour} $machineName${greyColour}:${endColour}\n"
@@ -121,7 +121,7 @@ function searchMachine(){
 
 function searchIP(){
   ipAddress="$1"
-  machineName=$(cat bundle.js | grep "ip: \"$ipAddress\"" -B 3 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')
+  machineName=$(cat data/bundle.js | grep "ip: \"$ipAddress\"" -B 3 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')
 
   if [ "$machineName" ]; then
     echo -e "\n${yellowColour}[+]${greyColour} La máquina con IP${blueColour} $ipAddress${greyColour} es${purpleColour} $machineName${endColour}\n"
@@ -139,10 +139,10 @@ function searchIP(){
 function getLink(){
   machineName="$1"
 
-  youtubeLink="$(cat bundle.js | grep "name: \"$machineName\"" -i -A 10 | grep youtube: | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')"
+  youtubeLink="$(cat data/bundle.js | grep "name: \"$machineName\"" -i -A 10 | grep youtube: | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')"
 
   if [ $youtubeLink ]; then
-    realName="$(cat bundle.js | grep "name: \"$machineName\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')"
+    realName="$(cat data/bundle.js | grep "name: \"$machineName\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',')"
     echo -e "\n${yellowColour}[+]${greyColour} La resolución de la máquina${blueColour} $realName${greyColour} puede encontrarse en el siguiente enlace: ${blueColour}$youtubeLink${endColour}\n"
   else
     echo -e "\n${redColour}[!] La máquina${blueColour} $machineName${redColour} no se encuentra en la base de datos o no dispone de enlace a su resolución${endColour}\n"
@@ -171,14 +171,14 @@ function searchDifficulty(){
   esac
 
   if [ $sorted -eq 1 ]; then
-    results_check="$(cat bundle.js | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort |  column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort |  column -x -c $(tput cols))"
   else
-    results_check="$(cat bundle.js | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$results_check" ]; then
     # Recuperamos el nivel de dificultad, tal y como está en el archivo original (se podría haber perdido al ser case insensitive)
-    realDifficulty="$(cat bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
+    realDifficulty="$(cat data/bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas de dificultad${difficultyColour} $realDifficulty${greyColour}:${endColour}\n"
     echo -e "${greyColour}$results_check${endColour}\n"
   else
@@ -199,14 +199,14 @@ function searchOSMachines(){
   sorted=$2
 
   if [ $sorted -eq 1 ]; then
-    os_results="$(cat bundle.js | grep "so: \"$os\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
+    os_results="$(cat data/bundle.js | grep "so: \"$os\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
   else
-    os_results="$(cat bundle.js | grep "so: \"$os\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    os_results="$(cat data/bundle.js | grep "so: \"$os\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$os_results" ]; then
     # Recuperamos el sistema operativo, tal y como está en el archivo original (se podría haber perdido al ser case insensitive)
-    realOS="$(cat bundle.js | grep "so: \"$os\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
+    realOS="$(cat data/bundle.js | grep "so: \"$os\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas para el sistema operativo ${blueColour}$realOS${greyColour}:${endColour}"
     echo -e "\n${greyColour}$os_results${endColour}\n"
   else
@@ -238,14 +238,14 @@ function searchOSDifficultyMachines(){
   esac
 
   if [ $sorted -eq 1 ]; then
-    results_check="$(cat bundle.js | grep "so: \"$os\"" -i -C 4 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "so: \"$os\"" -i -C 4 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
   else
-    results_check="$(cat bundle.js | grep "so: \"$os\"" -i -C 4 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "so: \"$os\"" -i -C 4 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$results_check" ]; then
-    realDifficulty="$(cat bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
-    realOS="$(cat bundle.js | grep "so: \"$os\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
+    realDifficulty="$(cat data/bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
+    realOS="$(cat data/bundle.js | grep "so: \"$os\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas para el sistema operativo${blueColour} $realOS${greyColour} con dificultad${difficultyColour} $realDifficulty${greyColour}:${endColour}"
     echo -e "\n${greyColour}$results_check${endColour}\n"
   else
@@ -267,14 +267,14 @@ function searchSkill(){
   sorted=$2
 
   if [ $sorted -eq 1 ]; then
-    results_check="$(cat bundle.js | grep "skills: " -B 6 | grep "$skill" -i -B 6 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "skills: " -B 6 | grep "$skill" -i -B 6 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
   else
-    results_check="$(cat bundle.js | grep "skills: " -B 6 | grep "$skill" -i -B 6 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "skills: " -B 6 | grep "$skill" -i -B 6 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$results_check" ]; then
     # Recuperamos la técnica tal y como está en el archivo original (podría haberse perdido al ser case insensitive)
-    realSkill="$(cat bundle.js | grep "$skill" -i | head -n 1 | grep "$skill" -i -o)"
+    realSkill="$(cat data/bundle.js | grep "$skill" -i | head -n 1 | grep "$skill" -i -o)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas que requieren de la técnica${blueColour} $realSkill${greyColour}:${endColour}"
     echo -e "\n${greyColour}$results_check${endColour}\n"
   else
@@ -294,14 +294,14 @@ function searchCertification(){
   sorted=$2
 
   if [ $sorted -eq 1 ]; then
-    results_check="$(cat bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
   else
-    results_check="$(cat bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$results_check" ]; then
     # Recuperamos la certificación tal y como está en el archivo original (podría haberse perdido al ser case insensitive)
-    realCertification="$(cat bundle.js | grep "$certification" -i | head -n 1 | grep "\b$certification\b" -i -m1 -oP | head -n 1)"
+    realCertification="$(cat data/bundle.js | grep "$certification" -i | head -n 1 | grep "\b$certification\b" -i -m1 -oP | head -n 1)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas asociadas a la certificación${blueColour} $realCertification${greyColour}:${endColour}"
     echo -e "\n${greyColour}$results_check${endColour}\n"
   else
@@ -331,16 +331,16 @@ function searchCertificationDifficulty(){
   esac
 
   if [ $sorted -eq 1 ]; then
-    results_check="$(cat bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | sort | column -x -c $(tput cols))"
   else
-    results_check="$(cat bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
+    results_check="$(cat data/bundle.js | grep "like: " -B 7 | grep "$certification" -i -B 7 | grep "dificultad: \"$difficulty\"" -i -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | column -x -c $(tput cols))"
   fi
 
   if [ "$results_check" ]; then
     # Recuperamos la certificación tal y como está en el archivo original (podría haberse perdido al ser case insensitive)
-    realCertification="$(cat bundle.js | grep "$certification" -i | head -n 1 | grep "\b$certification\b" -i -m1 -oP | head -n 1)"
+    realCertification="$(cat data/bundle.js | grep "$certification" -i | head -n 1 | grep "\b$certification\b" -i -m1 -oP | head -n 1)"
     # Hacemos lo mismo con la dificultad
-    realDifficulty="$(cat bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
+    realDifficulty="$(cat data/bundle.js | grep "dificultad: \"$difficulty\"" -i | awk 'NF{print $NF}' | tr -d '"' | tr -d ',' | head -n 1)"
     echo -e "\n${yellowColour}[+]${greyColour} Listando las máquinas asociadas a la certificación${blueColour} $realCertification${greyColour} y nivel de dificultad${difficultyColour} $realDifficulty${greyColour}:${endColour}"
     echo -e "\n${greyColour}$results_check${endColour}\n"
   else
