@@ -20,12 +20,12 @@
 Permite realizar búsquedas y actualizaciones sobre un archivo `bundle.js` (obtenido con curl desde https://htbmachines.github.io/bundle.js) que contiene información de máquinas HackTheBox resueltas por S4vitar. Las opciones disponibles son:
 
 * `u` → Descargar o actualizar archivos necesarios.
-* `n` → Buscar por nombre de máquina y listar sus características.
-* `p` → Buscar máquina por su dirección IP.
+* `m` → Buscar por nombre de máquina y listar sus características.
+* `i` → Buscar máquina por su dirección IP.
 * `y` → Obtener link de resolución en YouTube de una máquina concreta.
 * `d` → Listar máquinas por dificultad (puede combinarse con la búsqueda por SO o por certificación).
 * `o` → Listar máquinas por sistema operativo.
-* `k` → Listar máquinas por técnica.
+* `t` → Listar máquinas por técnica.
 * `c` → Listar máquinas por certificación.
 * `s` → Ordenar alfabéticamente los resultados (en el caso de que sean listas de máquinas).
 * `h` → Mostrar panel de ayuda.
@@ -33,8 +33,8 @@ Permite realizar búsquedas y actualizaciones sobre un archivo `bundle.js` (obte
 **Ejemplo básico de ejecución:**
 
 ```bash
-./htbmachines.sh -n "Monteverde"
-./htbmachines.sh -d Easy -s
+./htbmachines.sh -m Monteverde
+./htbmachines.sh -d Fácil -s
 ```
 
 ### 🎰 ruleta.sh
@@ -57,9 +57,9 @@ Para las estrategias inverseLabrouchere y fibonacci, utilizaremos secuencias pre
 
 La simulación se ejecuta de forma continua imprimiendo por pantalla una traza de cada jugada simulada. Podremos acelerar la simulación comentando o eliminando las líneas que imprimen la traza. Existen tres formas de detener la simulación:
 
-* Quedarnos sin dinero para apostar. La única manera si no establecemos un umbral de beneficio.
-* Alcanzar el umbral de beneficio. Si lo hemos establecido al lanzar el script, la simulación se detendrá si alcanzamos el umbral indicado.
-* Detención manual. Presionando la combinación de teclas Ctrl + C.
+* `Quedarnos sin dinero para apostar`. La única manera si no establecemos un umbral de beneficio.
+* `Alcanzar el umbral de beneficio`. Si lo hemos establecido al lanzar el script, la simulación se detendrá si alcanzamos el umbral indicado.
+* `Detención manual`. Presionando la combinación de teclas Ctrl + C.
 
 **Ejemplo básico:**
 
