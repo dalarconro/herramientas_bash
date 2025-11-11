@@ -6,7 +6,7 @@ La herramienta permite obtener las características correspondientes a una máqu
 
 Obtendremos todas las propiedades de la máquina, como ilustra la siguiente imagen:
 
-![Propiedades de la máquina Haircut](/screenshots/02-Máquina_Haircut.png)
+![Propiedades de la máquina Haircut](screenshots/02-Máquina_Haircut.png)
 
 También podemos buscar una máquina por su dirección ip utilizando el parámetro `-i`. En este caso nos devolverá el nombre asociado a la máquina. Siguiendo el ejemplo de la máquina Haircut, podemos ejecutar:
 
