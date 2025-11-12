@@ -22,5 +22,5 @@ Y si quisiéramos únicamente obtener en enlace al vídeo de Youtube con la reso
 
 Y obtendremos como resultado:
 
-`[+] La resolución de la máquina Haircut puede obtenerse en el siguiente enlace: https://www.youtube.com/watch?v=9gurBGeazok`
+`[+] La resolución de la máquina Haircut puede obtenerse en el siguiente enlace:` https://www.youtube.com/watch?v=9gurBGeazok
 
