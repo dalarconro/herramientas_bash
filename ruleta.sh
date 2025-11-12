@@ -86,7 +86,7 @@ function betResultColour(){
   blacks=(2 4 6 8 10 11 13 15 17 20 22 24 26 28 29 31 33 35)
   result_number="$(($RANDOM % 37))"
   if [ "$result_number" -eq 0 ]; then
-    echo -e "${yellowColour}[+]${greyColour} Ha salido el número${greenColour} $result_number${greyCoulor},${redCoulor} pierdes${endColour}"
+    echo -e "${yellowColour}[+]${greyColour} Ha salido el número${greenColour} $result_number${greyCoulor},${redColour} pierdes${endColour}"
     result="lose"
   else
     for red in "${reds[@]}"; do
@@ -188,7 +188,7 @@ function martingala(){
     fi
 
     if [ $bet -ge $money ]; then
-      #echo -e "\n\n${orangeColour}[!] Atención: jugada crítica. Si pierdes, te quedarás sin dinero${endColour}"
+      echo -e "\n\n${orangeColour}[!] Atención: jugada crítica. Si pierdes, te quedarás sin dinero${endColour}"
       bet=$money
     fi
     money=$(($money-$bet))

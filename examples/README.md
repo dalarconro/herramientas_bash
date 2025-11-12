@@ -6,8 +6,14 @@ Esta carpeta contiene ejemplos reales de ejecución de los scripts del proyecto.
 - `update.md`: descarga y actualización de los archivos necesarios.
 - `machine_search.md`: búsqueda de una máquina (por nombre o dirección IP).
 - `list_machines.md`: obtención de listas de máquinas que cumplen una determinada condición.
+- `ayuda.md`: utilización y muestra del panel de ayuda.
 
 ## ruleta.sh
-- `martingala_basic.txt`: simulación simple con estrategia Martingala.
-- `fibonacci_with_limit.txt`: simulación con umbral de beneficio.
-- `help_panel.txt`: panel de ayuda.
+- `martingala.md`: explicación y muestra de la estrategia Martingala.
+- `inverseLabrouchere.md`: explicación y muestra de la estrategia Labrouchere Inversa.
+- `fibonacci.md`: explicación y muestra de la estrategia Fibonacci.
+- `fin_del_juego.md`: explicación y muestra de las formas de terminar la simulación.
+- `restablecimiento_secuencia`: explicación y muestra de las condiciones de restablecimiento de la secuencia (solo para las estrategias Labrouchere Inversa y Fibonacci).
+- `ayuda.md`: utilización y muestra del panel de ayuda.
+
+
