@@ -67,6 +67,13 @@ La simulación se ejecuta de forma continua imprimiendo por pantalla una traza d
 ./ruleta.sh -m 1000 -t martingala -u 2000
 ```
 
+### :underage: Aviso
+
+En ningún caso el script `ruleta.sh` busca ofrecer consejos de cómo apostar a la ruleta. De hecho, En su versión más básica demuestra como no existe una estrategia infalible para ganar y que al final la banca siempre gana, haciéndonos perder todo nuestro dinero. No se recomienda el empleo de las estrategias en él implementadas como método para ganadr 'dinero fácil'.
+
+Eñ único propósito del script es practicar el scripting en bash.
+
+
 ---
 
 ## Requisitos

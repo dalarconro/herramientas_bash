@@ -1,6 +1,8 @@
-# Actualización de los archivos necesarios
+# :arrows_counterclockwise: Actualización de los archivos necesarios
 
 Para la correcta ejecución del script es necesario disponer de una versión actualizada del archivo bundle.js. Para mantenerlo siempre actualizado, no tenemos más que ejecutar el script de la siguiente forma:
+
+### :gear: Comando ejecutado
 
 `./htbmachines.sh -u `
 
@@ -10,17 +12,25 @@ Este comando descarga una versión temporal del archivo, lo trata y, si ya exist
 * Que lo tuviéramos descargado, pero esté desactualizado.
 * Que lo tuviéramos descargado y actualizado a la última versión.
 
-### Opción 1: El archivo no está descargado
+### Opción :one:: El archivo no está descargado
 
-En este caso, el archivo únicamente se desargará y se tratará para permitir su tratamiento en las distintas ejecuciones del script. Tras ejecutar el comando, obtendremos una salida como la siguiente:
+---
+
+En este caso, el archivo únicamente se desargará y se tratará para permitir su tratamiento en las distintas ejecuciones del script. 
+
+### :page_facing_up: Salida obtenida
 
 `[+] Descargando archivos necesarios`
 
 `[+] Todos los archivos han sido descargados`
 
-### Opción 2: El archivo está desactualizado
+### Opción :two:: El archivo está desactualizado
 
-En este caso, se descargará una copia temporal y se comparará con la que tengamos disponible. Al encontrar discrepancias, la copia temporal sustituirá a la original. Tras ejecutar el comando, obtendremos una salida como la siguiente:
+---
+
+En este caso, se descargará una copia temporal y se comparará con la que tengamos disponible. Al encontrar discrepancias, la copia temporal sustituirá a la original. 
+
+### :page_facing_up: Salida obtenida
 
 `[+] Comprobando si hay actualizaciones pendientes...`
 
@@ -28,15 +38,18 @@ En este caso, se descargará una copia temporal y se comparará con la que tenga
 
 `[+] Los archivos han sido actualizados correctamente`
 
-### Opción 3: El archivo está descargado y actualizado
+### Opción :three:: El archivo está descargado y actualizado
 
-Finalmente, en este caso y tras comprobar que la copia temporal y la original son idénticas, se descartará la copia temporal del archivo. Tras ejecutar el comando obtendremos una salida como la siguiente:
+---
+
+Finalmente, en este caso y tras comprobar que la copia temporal y la original son idénticas, se descartará la copia temporal del archivo. 
+
+### :page_facing_up: Salida obtenida
 
 `[+] Comprobando si hay actualizaciones pendientes...`
 
 `[+] No se han detectado actualizaciones. Los archivos están al día.`
 
-
-## Consideraciones finales
+## :speech_balloon: Consideraciones finales
 
 En cualquiera de las tres opciones, dispondremos del archivo `bundle.js` listo para su utilización, en la misma carpeta en la que se encuentra el script `htbmachines.sh`.
